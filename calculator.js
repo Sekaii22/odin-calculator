@@ -37,17 +37,16 @@ document.querySelectorAll(".number")
                 // prepare display for 2nd number
                 if (op !== null && num2 === null) display.textContent = "";
 
+                // append to display
+                display.textContent = (display.textContent === "0") ? numBtn.textContent : display.textContent + numBtn.textContent;
                 lastProcessed = numBtn.textContent
                 
                 // store current value depending if op is set
                 if (op === null) {
-                    // append to display
-                    display.textContent = (num1 === 0) ? numBtn.textContent : display.textContent + numBtn.textContent;
-                    num1 = +display.textContent;
+                    num1 = parseFloat(display.textContent);
                 }
                 else {
-                    display.textContent = (num2 === 0) ? numBtn.textContent : display.textContent + numBtn.textContent;
-                    num2 = +display.textContent;
+                    num2 = parseFloat(display.textContent);
                 }
             });
         });
@@ -111,7 +110,15 @@ document.querySelector(".eval").addEventListener("click", () => {
 // clear btn
 document.querySelector(".clear").addEventListener("click", clear);
 
-// WORKING: set default num1 value as 0
+// decimal point btn
+document.querySelector(".dp").addEventListener("click", (e) => {
+    if (lastProcessed === "=") clear();
+    if (!display.textContent.includes(".")) {
+        display.textContent += ".";
+        lastProcessed = e.target.textContent;
+        console.log(lastProcessed);
+    }
+});
 
 // TODO: Add event for divide by zero error, 
 // and for handling, disable all buttons except numbers, clear, and back.

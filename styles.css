@@ -1,18 +1,70 @@
-/* * {
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-} */
+    
+}
 
-button {
-    padding: 10px;
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    gap: 20px;
+}
+
+.cal-container {
+    font-family: "ZCOOL QingKe HuangYou", sans-serif;
+    background-color: #b3f5d7;
+    padding: 25px 20px 15px 20px;
+}
+
+.full-display {
+    background-color: #d0e4e5;
+    padding: 5px 8px;
+    margin-bottom: 12px;
+    border: 2px solid rgb(45, 45, 45);
 }
 
 #display {
-    height: 20px;
+    height: 50px;
+    font-family: inherit;
+    font-size: 30px;
+    text-align: right;
 }
 
 #full-expression {
-    height: 12px;
-    font-size: 12px;
+    height: 25px;
+    font-family: inherit;
+    font-size: 15px;
+    text-align: right;
+    opacity: 70%;
+}
+
+button {
+    width: 55px;
+    height: 55px;
+    padding: 10px;
+    margin: 2px 0;
+    text-align: center;
+    font-family: inherit;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+.op {
+    background-color: #94eff9;
+    border-color: #3095cc;
+}
+
+.debug-container {
+    width: 170px;
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }

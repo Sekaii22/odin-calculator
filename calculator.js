@@ -20,6 +20,10 @@ function clear() {
     num2 = null;
     op = null;
     error = false;
+
+    num1Display.textContent = num1;
+    opDisplay.textContent = String(op);
+    num2Display.textContent = String(num2);
 }
 
 function numberPress(keyedNum) {
@@ -162,6 +166,12 @@ function negatePress() {
     }
 }
 
+function updateDebugDisplay() {
+    num1Display.textContent = num1;
+    opDisplay.textContent = String(op);
+    num2Display.textContent = String(num2);
+}
+
 let display = document.querySelector("#display");
 let fullExpression = document.querySelector('#full-expression');
 let num1 = 0;
@@ -169,6 +179,13 @@ let num2 = null;
 let op = null;
 let lastProcessed = "";
 let error = false;
+
+let num1Display = document.querySelector("#num1-text");
+let opDisplay = document.querySelector("#op-text");
+let num2Display = document.querySelector("#num2-text");
+num1Display.textContent = num1;
+opDisplay.textContent = String(op);
+num2Display.textContent = String(num2);
 
 // number btns
 document.querySelectorAll(".number")
@@ -230,6 +247,12 @@ document.addEventListener("keydown", (e) => {
         backspacePress();
     }
 });
+
+// update debug texts
+document.querySelectorAll("button")
+        .forEach((btn) => {
+            btn.addEventListener("click", updateDebugDisplay);
+        });
 
 // WORKING: Add negative toggle -/+ 
 /*

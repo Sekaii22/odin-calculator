@@ -19,10 +19,11 @@ function clear() {
     num1 = 0;
     num2 = null;
     op = null;
+    error = false;
 }
 
 function numberPress(keyedNum) {
-    if (lastProcessed === "=") clear();
+    if (lastProcessed === "=" || error) clear();
 
     // prepare display for 2nd number
     if (op !== null && num2 === null) {
@@ -44,39 +45,39 @@ function numberPress(keyedNum) {
 }
 
 function operatorPress(keyOp) {
-    if (num1 !== null) {
-
-        // if no current op or if consecutive op btn is pressed, set to last entered
-        if (op === null || (op !== null && num2 === null)) {
-            op = keyOp;
-            fullExpression.textContent = num1 + " " + op;
-        }
-
-        // num1, op, num2 already have values when op btn is pressed,
-        // evaluate the result first, before assigning the next op
-        else {
-            let result = operate(num1, op, num2);
-            display.textContent = result;
-            op = keyOp;  
-            fullExpression.textContent += " " + num2 + " " + op;
-            
-            // check for error
-            if (typeof result !== "number") {
-                num1 = null;                     // stop any further operators or eval
-                lastProcessed = "=";             // set clear flag
-                return;
-            };
-            
-            num1 = result;
-            num2 = null;
-        }
-        
-        // at this point, num1 and op have values, num2 is null
-        lastProcessed = keyOp;
+    if (error) return;
+    
+    // if no current op or if consecutive op btn is pressed, set to last entered
+    if (op === null || (op !== null && num2 === null)) {
+        op = keyOp;
+        fullExpression.textContent = num1 + " " + op;
     }
+
+    // num1, op, num2 already have values when op btn is pressed,
+    // evaluate the result first, before assigning the next op
+    else {
+        let result = operate(num1, op, num2);
+        display.textContent = result;
+        op = keyOp;  
+        fullExpression.textContent += " " + num2 + " " + op;
+        
+        num1 = result;
+        num2 = null;
+        
+        // check for error
+        if (typeof result !== "number") {
+            error = true;                    // set error flag
+            return;
+        };
+    }
+    
+    // at this point, num1 and op have values, num2 is null
+    lastProcessed = keyOp;
 }
 
 function evalPress() {
+    if (error) return;
+
     // dont allow eval before all numbers and operator has been inputted
     if (num1 !== null && op !== null && num2 !== null) {
         let result = operate(num1, op, num2);
@@ -87,7 +88,7 @@ function evalPress() {
     
         // check for error
         if (typeof result !== "number") {
-            num1 = null;                          // stop further calculations
+            error = true
             return;
         }
 
@@ -98,7 +99,7 @@ function evalPress() {
 }
 
 function dpPress() {
-    if (lastProcessed === "=") clear();
+    if (lastProcessed === "=" || error) clear();
 
     // prepare display for 2nd number
     if (op !== null && num2 === null) {
@@ -114,16 +115,19 @@ function dpPress() {
 
 function backspacePress() {
     // reset all if last process was an eval
-    if (lastProcessed === "=") clear();
+    if (lastProcessed === "=" || error) clear();
 
     // only allow backspace if working on num1 or num2
     else if (op === null || (op !== null && num2 !== null)) {
-        // reset to 0 if only 1 digit
-        if (display.textContent.length <= 1) {
+        // reset to 0 if only 1 character
+        
+
+        display.textContent =  display.textContent.slice(0, -1);
+        const tempParsed = parseFloat(display.textContent);
+
+        // "-0." is allowed to skip this
+        if (isNaN(tempParsed) || (tempParsed === 0 && display.textContent.at(-1) !== ".")) {
             display.textContent = "0";
-        }
-        else {
-            display.textContent =  display.textContent.slice(0, -1);
         }
     
         // store current value depending if op is set
@@ -138,12 +142,33 @@ function backspacePress() {
     lastProcessed = "Backspace";
 }
 
+function negatePress() {
+    if (error) return;
+
+    // only allow sign negate if working on num1 or num2
+    if (op === null || (op !== null && num2 !== null)) {
+        
+        // store current value depending if op is set
+        if (op === null) {
+            if (lastProcessed === "=") fullExpression.textContent = "";
+            num1 *= -1;
+            display.textContent = num1;
+        }
+        else {
+            num2 *= -1;
+            display.textContent = num2;
+        }
+        lastProcessed = "negate";
+    }
+}
+
 let display = document.querySelector("#display");
 let fullExpression = document.querySelector('#full-expression');
 let num1 = 0;
 let num2 = null;
 let op = null;
 let lastProcessed = "";
+let error = false;
 
 // number btns
 document.querySelectorAll(".number")
@@ -172,6 +197,9 @@ document.querySelector(".dp").addEventListener("click", dpPress);
 
 // back btn
 document.querySelector(".back").addEventListener("click", backspacePress);
+
+// negate sign btn
+document.querySelector(".negate").addEventListener("click", negatePress);
 
 // keyboard support
 document.addEventListener("keydown", (e) => {
@@ -204,6 +232,13 @@ document.addEventListener("keydown", (e) => {
 });
 
 // WORKING: Add negative toggle -/+ 
+/*
+ When pressed, change the sign of num1 or num2.
+ 0 will not change sign
+ ERROR will not change sign, clicking it will do nothing
+ -----------------------------------------------------------
+ Results from eval and chain operation will change sign, show negate(result) on fullexpression
+*/
 
 // TODO: Add event for divide by zero error, 
 // and for handling, disable all buttons except numbers, clear, and back.

@@ -21,85 +21,73 @@ function clear() {
     op = null;
 }
 
-let display = document.querySelector("#display");
-let fullExpression = document.querySelector('#full-expression');
-let num1 = 0;
-let num2 = null;
-let op = null;
-let lastProcessed = "";
+function numberPress(keyedNum) {
+    if (lastProcessed === "=") clear();
 
-// number btns
-document.querySelectorAll(".number")
-        .forEach((numBtn) => {
-            numBtn.addEventListener("click", () => {
-                if (lastProcessed === "=") clear();
+    // prepare display for 2nd number
+    if (op !== null && num2 === null) {
+        display.textContent = "0";
+    }
 
-                // prepare display for 2nd number
-                if (op !== null && num2 === null) {
-                    display.textContent = "0";
-                }
-
-                // append to display
-                display.textContent = (display.textContent === "0") ? numBtn.textContent : display.textContent + numBtn.textContent;
-                lastProcessed = numBtn.textContent
-                
-                // store current value depending if op is set
-                if (op === null) {
-                    num1 = parseFloat(display.textContent);
-                }
-                else {
-                    num2 = parseFloat(display.textContent);
-                }
-            });
-        });
-
-// operator btns
-document.querySelectorAll(".op")
-        .forEach((opBtn) => {
-            opBtn.addEventListener("click", () => {
-                if (num1 !== null) {
-                    if (op === null || (op !== null && num2 === null)) {
-                        // if no op or if consecutive op btn is pressed, set to last op entered
-                        op = opBtn.textContent;
-                        fullExpression.textContent = num1 + " " + op;
-                    }
-                    else {
-                        // if num1, op, num2 already have values when op btn is pressed,
-                        // evaluate the result first, before assigning the next op
-                        let result = operate(num1, op, num2);
-                        display.textContent = result;
-                        op = opBtn.textContent;  
-                        fullExpression.textContent += " " + num2 + " " + op;
-                        
-                        // check for error
-                        if (typeof result !== "number") {
-                            num1 = null;                     // set num1 to null to stop any further operators or eval
-                            lastProcessed = "=";
-                            return;
-                        };
-                        
-                        num1 = result;
-                        num2 = null;
-                    }
+    // append to display
+    display.textContent = (display.textContent === "0") ? keyedNum : display.textContent + keyedNum;
     
-                    lastProcessed = opBtn.textContent;
-                }
-            });
-        });
+    // store current value depending if op is set
+    if (op === null) {
+        num1 = parseFloat(display.textContent);
+    }
+    else {
+        num2 = parseFloat(display.textContent);
+    }
 
-// eval btn
-document.querySelector(".eval").addEventListener("click", (e) => {
+    lastProcessed = keyedNum
+}
+
+function operatorPress(keyOp) {
+    if (num1 !== null) {
+
+        // if no current op or if consecutive op btn is pressed, set to last entered
+        if (op === null || (op !== null && num2 === null)) {
+            op = keyOp;
+            fullExpression.textContent = num1 + " " + op;
+        }
+
+        // num1, op, num2 already have values when op btn is pressed,
+        // evaluate the result first, before assigning the next op
+        else {
+            let result = operate(num1, op, num2);
+            display.textContent = result;
+            op = keyOp;  
+            fullExpression.textContent += " " + num2 + " " + op;
+            
+            // check for error
+            if (typeof result !== "number") {
+                num1 = null;                     // stop any further operators or eval
+                lastProcessed = "=";             // set clear flag
+                return;
+            };
+            
+            num1 = result;
+            num2 = null;
+        }
+        
+        // at this point, num1 and op have values, num2 is null
+        lastProcessed = keyOp;
+    }
+}
+
+function evalPress() {
     // dont allow eval before all numbers and operator has been inputted
     if (num1 !== null && op !== null && num2 !== null) {
         let result = operate(num1, op, num2);
         display.textContent = result;
 
         fullExpression.textContent += " " + num2 + " =";
-        lastProcessed = e.target.textContent;
+        lastProcessed = "=";
     
         // check for error
         if (typeof result !== "number") {
-            num1 = null;                                    // prevents further calculations
+            num1 = null;                          // stop further calculations
             return;
         }
 
@@ -107,34 +95,30 @@ document.querySelector(".eval").addEventListener("click", (e) => {
         op = null;
         num2 = null;
     }
-})
+}
 
-// clear btn
-document.querySelector(".clear").addEventListener("click", clear);
-
-// decimal point btn
-document.querySelector(".dp").addEventListener("click", (e) => {
+function dpPress() {
     if (lastProcessed === "=") clear();
 
+    // prepare display for 2nd number
+    if (op !== null && num2 === null) {
+        display.textContent = "0";
+        num2 = 0;
+    }
+
     if (!display.textContent.includes(".")) {
-        if (op !== null && num2 === null) {
-            display.textContent = "0";
-            num2 = 0;
-        }
 
         display.textContent += ".";
-        lastProcessed = e.target.textContent;
+        lastProcessed = ".";
     }
-});
+}
 
-// back btn
-document.querySelector(".back").addEventListener("click", (e) => {
+function backspacePress() {
     // reset all if last process was an eval
     if (lastProcessed === "=") clear();
 
     // only allow backspace if working on num1 or num2
     else if (op === null || (op !== null && num2 !== null)) {
-       console.log('backspace');
         // reset to 0 if only 1 digit
         if (display.textContent.length <= 1) {
             display.textContent = "0";
@@ -152,7 +136,48 @@ document.querySelector(".back").addEventListener("click", (e) => {
         }
     }
     
-    lastProcessed = e.target.textContent;
+    lastProcessed = "Backspace";
+}
+
+let display = document.querySelector("#display");
+let fullExpression = document.querySelector('#full-expression');
+let num1 = 0;
+let num2 = null;
+let op = null;
+let lastProcessed = "";
+
+// number btns
+document.querySelectorAll(".number")
+        .forEach((numBtn) => {
+            numBtn.addEventListener("click", () => {
+                numberPress(numBtn.textContent);
+            });
+        });
+
+// operator btns
+document.querySelectorAll(".op")
+        .forEach((opBtn) => {
+            opBtn.addEventListener("click", () => {
+                operatorPress(opBtn.textContent);
+            });
+        });
+
+// eval btn
+document.querySelector(".eval").addEventListener("click", evalPress);
+
+// clear btn
+document.querySelector(".clear").addEventListener("click", clear);
+
+// decimal point btn
+document.querySelector(".dp").addEventListener("click", dpPress);
+
+// back btn
+document.querySelector(".back").addEventListener("click", backspacePress);
+
+document.addEventListener("keydown", (e) => {
+    console.log(e.key);
+
+
 });
 
 // WORKING: keyboard support

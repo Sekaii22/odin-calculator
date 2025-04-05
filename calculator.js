@@ -35,7 +35,9 @@ document.querySelectorAll(".number")
                 if (lastProcessed === "=") clear();
 
                 // prepare display for 2nd number
-                if (op !== null && num2 === null) display.textContent = "";
+                if (op !== null && num2 === null) {
+                    display.textContent = "";
+                }
 
                 // append to display
                 display.textContent = (display.textContent === "0") ? numBtn.textContent : display.textContent + numBtn.textContent;
@@ -86,14 +88,14 @@ document.querySelectorAll(".op")
         });
 
 // eval btn
-document.querySelector(".eval").addEventListener("click", () => {
+document.querySelector(".eval").addEventListener("click", (e) => {
     // dont allow eval before all numbers and operator has been inputted
     if (num1 !== null && op !== null && num2 !== null) {
         let result = operate(num1, op, num2);
         display.textContent = result;
 
         fullExpression.textContent += " " + num2 + " =";
-        lastProcessed = "=";
+        lastProcessed = e.target.textContent;
     
         // check for error
         if (typeof result !== "number") {
@@ -113,12 +115,38 @@ document.querySelector(".clear").addEventListener("click", clear);
 // decimal point btn
 document.querySelector(".dp").addEventListener("click", (e) => {
     if (lastProcessed === "=") clear();
+
     if (!display.textContent.includes(".")) {
+        if (op !== null && num2 === null) {
+            display.textContent = "0";
+            num2 = 0;
+        }
+
         display.textContent += ".";
         lastProcessed = e.target.textContent;
-        console.log(lastProcessed);
     }
 });
+
+// back btn
+document.querySelector(".back").addEventListener("click", (e) => {
+    if (lastProcessed === "=") clear();
+    else if (op === null) {
+        display.textContent = (display.textContent === "0") ? 0 : display.textContent.slice(0, -1);
+    
+        // store current value depending if op is set
+        if (op === null) {
+            num1 = parseFloat(display.textContent);
+        }
+        else {
+            num2 = parseFloat(display.textContent);
+        }
+    }
+    
+    lastProcessed = e.target.textContent;
+});
+
+// WORKING: backspace
+// BUG: can add a "." to the result from chaining operators
 
 // TODO: Add event for divide by zero error, 
 // and for handling, disable all buttons except numbers, clear, and back.

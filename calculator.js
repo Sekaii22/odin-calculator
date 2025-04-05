@@ -14,16 +14,18 @@ function operate(a, op, b) {
 }
 
 function clear() {
-    display.textContent = "";
+    display.textContent = "0";
     fullExpression.textContent = "";
-    num1 = null;
+    num1 = 0;
     num2 = null;
     op = null;
 }
 
 let display = document.querySelector("#display");
 let fullExpression = document.querySelector('#full-expression');
-let num1, num2, op = null;
+let num1 = 0;
+let num2 = null;
+let op = null;
 let lastProcessed = "";
 
 // number btns
@@ -35,15 +37,16 @@ document.querySelectorAll(".number")
                 // prepare display for 2nd number
                 if (op !== null && num2 === null) display.textContent = "";
 
-                // append to display
-                display.textContent += numBtn.textContent;
                 lastProcessed = numBtn.textContent
-
+                
                 // store current value depending if op is set
                 if (op === null) {
+                    // append to display
+                    display.textContent = (num1 === 0) ? numBtn.textContent : display.textContent + numBtn.textContent;
                     num1 = +display.textContent;
                 }
                 else {
+                    display.textContent = (num2 === 0) ? numBtn.textContent : display.textContent + numBtn.textContent;
                     num2 = +display.textContent;
                 }
             });
@@ -69,7 +72,7 @@ document.querySelectorAll(".op")
                         
                         // check for error
                         if (typeof result !== "number") {
-                            num1 = null;                     // only have to set num1 to null to stop any operators or eval
+                            num1 = null;                     // set num1 to null to stop any further operators or eval
                             lastProcessed = "=";
                             return;
                         };
@@ -108,7 +111,7 @@ document.querySelector(".eval").addEventListener("click", () => {
 // clear btn
 document.querySelector(".clear").addEventListener("click", clear);
 
-// TODO: set default num1 value as 0
+// WORKING: set default num1 value as 0
 
 // TODO: Add event for divide by zero error, 
 // and for handling, disable all buttons except numbers, clear, and back.

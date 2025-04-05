@@ -36,7 +36,7 @@ document.querySelectorAll(".number")
 
                 // prepare display for 2nd number
                 if (op !== null && num2 === null) {
-                    display.textContent = "";
+                    display.textContent = "0";
                 }
 
                 // append to display
@@ -129,9 +129,19 @@ document.querySelector(".dp").addEventListener("click", (e) => {
 
 // back btn
 document.querySelector(".back").addEventListener("click", (e) => {
+    // reset all if last process was an eval
     if (lastProcessed === "=") clear();
-    else if (op === null) {
-        display.textContent = (display.textContent === "0") ? 0 : display.textContent.slice(0, -1);
+
+    // only allow backspace if working on num1 or num2
+    else if (op === null || (op !== null && num2 !== null)) {
+       console.log('backspace');
+        // reset to 0 if only 1 digit
+        if (display.textContent.length <= 1) {
+            display.textContent = "0";
+        }
+        else {
+            display.textContent =  display.textContent.slice(0, -1);
+        }
     
         // store current value depending if op is set
         if (op === null) {
@@ -145,8 +155,7 @@ document.querySelector(".back").addEventListener("click", (e) => {
     lastProcessed = e.target.textContent;
 });
 
-// WORKING: backspace
-// BUG: can add a "." to the result from chaining operators
+// WORKING: keyboard support
 
 // TODO: Add event for divide by zero error, 
 // and for handling, disable all buttons except numbers, clear, and back.

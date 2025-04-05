@@ -107,7 +107,6 @@ function dpPress() {
     }
 
     if (!display.textContent.includes(".")) {
-
         display.textContent += ".";
         lastProcessed = ".";
     }
@@ -174,13 +173,37 @@ document.querySelector(".dp").addEventListener("click", dpPress);
 // back btn
 document.querySelector(".back").addEventListener("click", backspacePress);
 
+// keyboard support
 document.addEventListener("keydown", (e) => {
-    console.log(e.key);
+    let keyPressed = e.key;
+    console.log(keyPressed);
 
-
+    if (isNaN(keyPressed) === false) {
+        // number key pressed
+        numberPress(keyPressed);
+    }
+    else if (Object.keys(operators).includes(keyPressed)) {
+        // operator key pressed
+        operatorPress(keyPressed);
+    }
+    else if (keyPressed === "=") {
+        // eval
+        evalPress();
+    }
+    else if (keyPressed === "Escape") {
+        // clear
+        clear();
+    }
+    else if (keyPressed === ".") {
+        //decimal point pressed
+        dpPress();
+    }
+    else if (keyPressed === "Backspace") {
+        backspacePress();
+    }
 });
 
-// WORKING: keyboard support
+// WORKING: Add negative toggle -/+ 
 
 // TODO: Add event for divide by zero error, 
 // and for handling, disable all buttons except numbers, clear, and back.

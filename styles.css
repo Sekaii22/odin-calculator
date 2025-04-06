@@ -10,49 +10,65 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background-color: rgb(84, 47, 53);
 }
 
 .container {
+    background-color: rgb(255, 246, 192);
+    border-radius: 10px 3px 3px 10px;
     display: flex;
     gap: 20px;
 }
 
 .cal-container {
     font-family: "ZCOOL QingKe HuangYou", sans-serif;
+    padding: 25px 20px 20px 20px;
     background-color: #b3f5d7;
-    padding: 25px 20px 15px 20px;
+    border: 2px solid #2e4038;
+    border-radius: 10px;
+    box-shadow: rgba(45, 45, 45, 60%) 10px 10px 15px;
 }
 
 .full-display {
     background-color: #d0e4e5;
     padding: 5px 8px;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     border: 2px solid rgb(45, 45, 45);
 }
 
-#display {
-    height: 50px;
-    font-family: inherit;
-    font-size: 30px;
-    text-align: right;
-}
-
 #full-expression {
-    height: 25px;
+    height: 35px;
     font-family: inherit;
-    font-size: 15px;
+    font-size: 25px;
     text-align: right;
     opacity: 70%;
 }
 
+#display {
+    height: 60px;
+    font-family: inherit;
+    font-size: 40px;
+    text-align: right;
+}
+
+.keypad {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.row {
+    display: flex;
+    gap: 5px;
+}
+
 button {
-    width: 55px;
-    height: 55px;
+    width: 65px;
+    height: 65px;
     padding: 10px;
-    margin: 2px 0;
     text-align: center;
     font-family: inherit;
-    font-size: 18px;
+    font-size: 22px;
     border-radius: 5px;
 }
 
@@ -62,9 +78,13 @@ button {
 }
 
 .debug-container {
-    width: 170px;
+    width: 200px;
+    padding: 25px 20px;
+}
+
+.debug-container p{
+    margin: 5px 0;
     font-family: 'Courier New', Courier, monospace;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    font-size: 18px;
+    color: rgb(27, 27, 27);
 }

@@ -254,14 +254,8 @@ document.querySelectorAll("button")
             btn.addEventListener("click", updateDebugDisplay);
         });
 
-// WORKING: Add negative toggle -/+ 
-/*
- When pressed, change the sign of num1 or num2.
- 0 will not change sign
- ERROR will not change sign, clicking it will do nothing
- -----------------------------------------------------------
- Results from eval and chain operation will change sign, show negate(result) on fullexpression
-*/
+
+// BUG: chaining lots of operator or when digits entered is very long, display will stretch
 
 // TODO: Add event for divide by zero error, 
 // and for handling, disable all buttons except numbers, clear, and back.

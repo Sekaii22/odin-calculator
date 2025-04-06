@@ -2,7 +2,6 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    
 }
 
 body {
@@ -115,4 +114,10 @@ button {
 
 .debug-container span {
     margin-right: 15px;
+}
+
+img {
+    height: 560px;
+    width: auto;
+    margin-left: 30px;
 }

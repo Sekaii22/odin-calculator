@@ -324,11 +324,3 @@ document.querySelectorAll("button:not(.on)")
         .forEach((btn) => {
             btn.addEventListener("click", updateDebugDisplay);
         });
-
-// BUG: chaining lots of operator or when digits entered is very long, display will stretch
-// max is 14 char before display warps
-// restrict value keyed to 14 char (DONE)
-// when result after removing all decimal numbers are still more than 14 digits, show error: number too large (DONE)
-
-// TODO: Add event for divide by zero error, 
-// and for handling, disable all buttons except numbers, clear, and back.

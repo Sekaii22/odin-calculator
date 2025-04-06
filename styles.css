@@ -92,11 +92,27 @@ button {
 .debug-container {
     width: 270px;
     padding: 25px 20px;
+
+    /* Put horizontal scroll at top */
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    white-space: nowrap;
+    overflow-x: scroll;
+    transform: rotateX(180deg);
+}
+
+.debug-texts {
+    transform: rotateX(180deg);
 }
 
 .debug-container p{
-    margin: 5px 0;
+    margin: 5px;
     font-family: 'Courier New', Courier, monospace;
     font-size: 18px;
     color: rgb(27, 27, 27);
+}
+
+.debug-container span {
+    margin-right: 15px;
 }

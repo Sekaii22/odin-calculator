@@ -37,11 +37,17 @@ body {
 }
 
 #full-expression {
-    height: 35px;
+    height: 45px;
     font-family: inherit;
     font-size: 25px;
     text-align: right;
     opacity: 70%;
+
+    /* Add horizontal scroll */
+    width: 295px;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin: 0 auto;
 }
 
 #display {
@@ -49,6 +55,12 @@ body {
     font-family: inherit;
     font-size: 40px;
     text-align: right;
+
+    /* Add horizontal scroll */
+    width: 295px;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin: 0 auto;
 }
 
 .keypad {
@@ -63,12 +75,12 @@ body {
 }
 
 button {
-    width: 65px;
-    height: 65px;
+    width: 75px;
+    height: 75px;
     padding: 10px;
     text-align: center;
     font-family: inherit;
-    font-size: 22px;
+    font-size: 28px;
     border-radius: 5px;
 }
 
@@ -78,7 +90,7 @@ button {
 }
 
 .debug-container {
-    width: 200px;
+    width: 270px;
     padding: 25px 20px;
 }
 

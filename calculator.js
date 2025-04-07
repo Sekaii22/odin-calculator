@@ -155,9 +155,6 @@ function backspacePress() {
 
     // only allow backspace if working on num1 or num2
     else if (op === null || (op !== null && num2 !== null)) {
-        // reset to 0 if only 1 character
-        
-
         display.textContent =  display.textContent.slice(0, -1);
         const tempParsed = parseFloat(display.textContent);
 
@@ -201,6 +198,7 @@ function negatePress() {
             num2 *= -1;
             display.textContent = num2;
         }
+        
         lastProcessed = "negate";
     }
 }
@@ -278,23 +276,18 @@ document.addEventListener("keydown", (e) => {
         console.log(keyPressed);
     
         if (isNaN(keyPressed) === false) {
-            // number key pressed
             numberPress(keyPressed);
         }
         else if (Object.keys(operators).includes(keyPressed)) {
-            // operator key pressed
             operatorPress(keyPressed);
         }
         else if (keyPressed === "=") {
-            // eval
             evalPress();
         }
         else if (keyPressed === "Escape") {
-            // clear
             clear();
         }
         else if (keyPressed === ".") {
-            //decimal point pressed
             dpPress();
         }
         else if (keyPressed === "Backspace") {

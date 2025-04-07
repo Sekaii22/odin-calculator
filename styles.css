@@ -85,7 +85,11 @@ button {
 
 .op {
     background-color: #94eff9;
-    border-color: #3095cc;
+    border-color: #37aceb;
+}
+
+.op:hover {
+    background-color: #78c6cf;
 }
 
 .debug-container {

@@ -1,5 +1,7 @@
-# odin-calculator
+# top-calculator
 A calculator project. This is a JavaScript assignment from The Odin Project.
+
+<img loading="lazy" width="800px" src="./images/calculator.png" alt="calculator" />
 
 ## Reflections
 Initially, I thought this project would be a breeze, just do basic operations on two numbers inputted from the user and display the result. However, there are more considerations and nuances than I thought in a simple calculator.
